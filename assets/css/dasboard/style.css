@@ -1,0 +1,516 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;1,300;1,400&family=Roboto:ital,wght@0,100;0,300;1,100;1,300&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    font-family: 'Roboto';
+}
+
+html, body {
+    height: 100%;
+}
+
+body { 
+    overflow: hidden;
+    background: var(--background-body);
+ }
+
+
+/* --- classes - mini-framework ----*/
+
+.contents {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 10px 0;
+    box-shadow: 0 5px 5px 1px rgb(175, 175, 175);
+
+}
+
+.wd100 { width: 100%; }
+.wd50 { width: 50%;}
+.wd25 {width: 25%;}
+.wd20 {width: 20%;}
+
+.titulo_principal {
+    font-size: 26px;
+    font-weight: normal;
+}
+
+.breadcrumbs > a.link {
+    color: #3C3C3C;
+    transition: 0.5s all;
+    border-bottom: 1px solid transparent;
+}
+
+.breadcrumbs > a.link span { padding-left: 6px; }
+.breadcrumbs > a.link:hover {
+    transition: 3s all;
+    color: black;
+    border-bottom-color: #3C3C3C;
+}
+
+/*---- send_to_page ------*/
+
+.send_to_page--wraper {padding: 30px;}
+.send_to_page a {color: rgb(36, 36, 36);}
+
+.send_to_page h3 {
+    font-size: 25px;
+    font-weight: 400;
+    margin-bottom: 20px;
+}
+.send_to_page--icon svg path {stroke: #505050;}
+
+/*-------------- MESSAGEM DE FORMULARIO ----------------*/
+.box_alert {
+    position: absolute;
+    top: 0;
+    left: -200px;
+    width: calc(100% + 200px);
+    padding: 10px;
+    z-index: -1;
+}
+
+.box_alert.success {background-color: rgba(116, 201, 134, 0.5);}
+.box_alert.erro { background-color: rgba(248, 79, 79, 0.5); }
+.box_alert p {
+    font-size: 15px;
+    padding-left: 230px;
+}
+
+
+/*----------- input_box -------------*/
+
+.gp_input_box {
+    display: flex;
+    justify-content: space-between;
+}
+.gp_input_box > .input_box { width: 49%; }
+
+.input_box { margin-bottom: 10px; }
+
+.input_box input, .input_box select {
+    width: 100%;
+    height: 40px;
+    border: 1px solid #ccc;
+    outline: none;
+    padding-left: 8px;
+    border-radius: 10px;
+    font-size: 15px;
+}
+.input_box input.submit {
+    width: 200px;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    background-color: rgb(230, 230, 230)
+}
+
+.input_box label.description {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 17px;
+}
+
+/* -- variaveis ---*/
+:root {
+    --background-body : #EEEEEE;
+}
+
+/*----------------- final do mini FrameWork ---------------------*/
+/* ----------------- ESTILO DO LOGIN -----------*/
+.login {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login--container {
+    width: 30%;
+}
+
+.login--form input {
+    width: 100%;
+    height: 40px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    outline: none;
+    
+}
+
+/* ------------- ESTILO DA PAGINA ADIMINISTRATIVA ---------------   */
+
+/*--- COMPENENTE MENU ( menu lateral ) ---*/
+.menu {
+    width: 200px;
+    height: 100%;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+    overflow: hidden;
+}
+
+.menu--final {
+    width: 100%;
+    height: calc( 100% - 300px);
+    background-color: #3C3C3C;
+}
+
+.menu--perfil {
+    width: 100%;
+    background-color: #3C3C3C;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.menu--perfil_usuario > .icon_svg {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    stroke: #fff;
+}
+.menu--perfil_usuario svg {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.menu--perfil_usuario svg path {
+    stroke: inherit;
+}
+
+.menu--perfil_usuario h3 {
+    color: #fff;
+    margin: 10px 0;
+    font-size: 16px;
+    font-weight: 100;
+    text-transform: uppercase;
+}
+
+/*---------------*/
+
+li.menu--pagina {
+    background-color: #444444;
+    padding-left: 5px;
+}
+li.menu--pagina:nth-of-type(1) {padding-top: 10px;}
+
+li.menu--pagina a {
+    color: var(--background-body);
+    display: block;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    position: relative;
+}
+
+li.menu--pagina a svg {
+    width: 18px;
+    height: 18px;
+}
+li.menu--pagina a svg path {
+    stroke: #EEEEEE;
+}
+li.menu--pagina a span {
+   font-size: 20px;
+   padding-left: 5px;
+}
+
+/* classe de evento do menu. - selected- */
+
+li.menu--pagina.selected a {
+    color: #444444;
+    background-color: var(--background-body);
+}
+
+li.menu--pagina.selected a svg path{
+    stroke: #444444;
+}
+
+li.menu--pagina.border_up {
+    border-top-right-radius: 20px;
+}
+
+li.menu--pagina.border_down {
+    border-bottom-right-radius: 20px;
+}
+
+/*--------------------------------------------*/
+
+/*--- ADMIN ---*/
+
+section#admin {
+    display: flex;
+    height: 100%;
+}
+
+.main {
+    position: relative;
+    padding: 40px;
+    width: calc(100% - 200px);
+    overflow: auto;
+}
+
+/* --- PAGINA INICIO ---*/
+
+.informacao_estoque {
+    display: flex;
+}
+
+.informacao_estoque .contents {padding: 40px 20px;}
+.informacao_estoque .contents:nth-of-type(1) { margin-right: 20px; }
+
+.informacao_estoque .contents h3 {
+    font-size: 22px;
+    font-weight: 300;
+    margin-bottom: 10px;
+}
+
+.informacao_estoque .contents .quantidade {
+    font-size: 30px;
+    color: #444444;
+}
+
+/* --- PAGINA CADASTRO  & PAGINA GERENCIAR ---*/
+
+.cadastros, .gerenciar {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.cadastros .contents, 
+.gerenciar .contents {
+    transform: scale(.95);
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    transition: 0.5s all;
+}
+
+.cadastros > .contents:hover,
+.gerenciar > .contents:hover {
+    transition: 0.5s all;
+    transform: scale(.99);
+    box-shadow: 0 5px 10px 2.5px rgb(117, 117, 117);
+
+}
+
+/* ---- PAGINA CADASTRAR PRODUTO & PAGINA CADASTRAR CATEGORIA ----*/
+
+.criar_produto h3, .criar_categoria h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.criar_produto .input_box input.submit, 
+.criar_categoria .input_box input.submit{
+    background-color: #64BD6D;
+    color: #353535;
+}
+
+/* ----- PAGINA PRODUTOS -- OBS: Mostra todos os produtos ---*/
+
+.produtos--wraper {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.produtos .card {
+    position: relative;
+    width: calc( 100% / 5 );
+    background-color: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    box-shadow: 0 3px 5px 1px rgb(175, 175, 175);
+    transform: scale(0.95);
+
+}
+
+.produtos .card--img {
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    padding-top: 120%;
+}
+.produtos .card--img.hide {
+    opacity: 0.7;
+}
+
+.produtos .card--edit_btn,
+.produtos .card--informativo,
+.card--aviso {
+    position: absolute;
+    z-index: 2;
+}
+.card--aviso {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    background-color: rgba(224, 33, 33, 0.6);
+    border-radius: 20px;
+    padding: 20px;
+    color: #fff;
+    text-align: center;
+}
+.card--aviso p {
+    margin-top: 10px;
+}
+
+.produtos .card--edit_btn {
+    top: 10px;
+    right: 10px;
+}
+.produtos .card--edit_btn a#editarProduto {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    background: rgba(226, 226, 226, 0.5);
+    cursor: pointer;
+    transition: 0.5s all;
+    box-shadow: 0 0 5px 1px rgb(100, 100, 100);
+}
+
+.produtos .card--edit_btn a#editarProduto:hover {
+    transition: 0.7s all;
+    transform: scale(1.05);
+    border: 5px solid rgba(53, 138, 177, 0.3);
+
+}
+
+.produtos .card--informativo {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px;
+    background-color: #fff;
+}
+
+.produtos .card--informativo.show {border-top: 5px solid #569BED;}
+.produtos .card--informativo.hide { border-top: 5px solid #ed5656; }
+
+.produtos .card--informativo h3 {
+    font-weight: normal;
+    margin-bottom: 5px;
+}
+.produtos .card--estoque_produto {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.produtos .card--estoque_produto p {color: #3f3f3f;}
+
+/* --- PAGINA EDITAR PRODUTO ---*/
+
+.editar_produto--nav {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.editar_produto--nav .contents { 
+    transform: scale(.95);
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    transition: 0.5s all;
+}
+
+.editar_produto--nav .contents:hover {
+    transition: 0.5s all;
+    transform: scale(.99);
+    box-shadow: 0 5px 10px 2.5px rgb(117, 117, 117);
+}
+
+.editar_produto--modal > .imagens_produto .img_box {
+    width: 200px;
+    position: relative;
+}
+
+.editar_produto--modal > .imagens_produto img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.editar_produto--modal > .imagens_produto .img_box--delete {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(235, 235, 235, 0.5);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.7s;
+}
+.editar_produto--modal > .imagens_produto .img_box--delete:hover {
+    transition: 0.7s;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+
+.editar_produto--modal .input_box input.submit {
+    background-color: #64BD6D;
+}
+
+/* ---- MEDIA SCREEN -----*/
+
+@media screen and (max-width: 1635px) {
+    .cadastros > .contents {
+        width: 25%;
+    }
+}
+
+@media screen and (max-width: 1400px) {
+    .cadastros h3 {
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    
+    .cadastros > .contents {
+        width: 33.3%;
+    }
+}
+
+
+@media screen and (max-width: 680px) {
+    .cadastros > .contents {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+
+    .informacao_estoque {
+        flex-wrap: wrap;
+    }
+    .informacao_estoque > .contents { width: 100%; }
+    .informacao_estoque .contents:nth-of-type(1) { margin-right: 0; }
+
+    .cadastros > .contents {
+        width: 100%;
+    }
+}
