@@ -56,6 +56,38 @@
                 <input class="input" type="number" name="peso" placeholder="EXE: 400g, 1000g e só é necessario apenas os numeros..." value="<?= @$input['peso']?>" required>
             </div>
 
+            <div class="input_box_check">
+                <fieldset>
+                    <legend>Escolher tamanhos do produto</legend>
+
+                    <div class="check">
+                        <input class="input" type="checkbox" name='tamanhos[]' value="PP">
+                        <label class="description">PP</label>
+                    </div>
+
+                    <div class="check">
+                        <input class="input" type="checkbox" name='tamanhos[]' value="P">
+                        <label class="description">P</label>
+                    </div>
+
+                    <div class="check">
+                        <input class="input" type="checkbox" name='tamanhos[]' value="M">
+                        <label class="description">M</label>
+                    </div>
+
+                    <div class="check">
+                        <input class="input" type="checkbox" name='tamanhos[]' value="G">
+                        <label class="description">G</label>
+                    </div>
+
+                    <div class="check">
+                        <input class="input" type="checkbox" name='tamanhos[]' value="GG">
+                        <label class="description">GG</label>
+                    </div>
+                    
+                </fieldset>
+            </div>
+
             <div class="input_box">
                 <label class="description">Quantidade do produto</label>
                 <input class="input" type="number" name="quantidade" placeholder="Inserir numeros inteiros..." value="<?= @$input['quantidade']?>" required>

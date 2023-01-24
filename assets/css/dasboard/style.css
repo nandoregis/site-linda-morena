@@ -74,6 +74,7 @@ body {
     width: calc(100% + 200px);
     padding: 10px;
     z-index: -1;
+
 }
 
 .box_alert.success {background-color: rgba(116, 201, 134, 0.5);}
@@ -92,7 +93,7 @@ body {
 }
 .gp_input_box > .input_box { width: 49%; }
 
-.input_box { margin-bottom: 10px; }
+.input_box, .input_box_check { margin-bottom: 10px; }
 
 .input_box input, .input_box select {
     width: 100%;
@@ -116,6 +117,19 @@ body {
     margin-bottom: 5px;
     font-size: 17px;
 }
+.input_box_check fieldset {
+    border: 1px solid #ccc;
+    padding: 15px 10px;
+}
+
+.input_box_check .check {
+    display: inline-block;
+    padding-right: 10px;
+}
+.input_box_check .check input {
+    cursor: pointer;
+}
+
 
 /* -- variaveis ---*/
 :root {
@@ -434,6 +448,11 @@ section#admin {
     transition: 0.5s all;
 }
 
+/* ----- EVENTO DE CLICK DA PAGINA EDITAR PRODUTO ------*/
+.editar_produto--nav .contents.active {transform: scale(.99);}
+.editar_produto--nav .contents.hide { opacity: 0.5;}
+/*---------------------------------------*/
+
 .editar_produto--nav .contents:hover {
     transition: 0.5s all;
     transform: scale(.99);
@@ -444,6 +463,8 @@ section#admin {
     width: 200px;
     position: relative;
 }
+
+.editar_produto--modal .modal-hide { display: none; }
 
 .editar_produto--modal > .imagens_produto img {
     width: 100%;

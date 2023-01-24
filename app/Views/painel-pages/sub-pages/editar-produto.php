@@ -1,3 +1,12 @@
+<?php
+
+    if( isset($dados['mensagem']) ) {
+        $mensagem = $dados['mensagem'];
+        $this->viewBoxAlert($mensagem['success'], $mensagem['message']);
+    }
+    
+?>
+
 <div class="contents">
     <h3>
         <div class="breadcrumbs">
@@ -11,12 +20,14 @@
     </h3>
 </div>
 
-<header style="display: none;" class="editar_produto">
+
+
+<header class="editar_produto">
     <nav class="editar_produto--nav">
 
         <div class="contents wd20 ">
             <div class="send_to_page">
-                <a class="btn_open_modal" href="#">
+                <a showDiv='dadosProduto' class="btn_open_modal" href="#">
                     <div class="send_to_page--wraper">
                         <h3>Editar dados</h3>
                         <div class="send_to_page--icon">
@@ -32,7 +43,7 @@
 
         <div class="contents wd20 ">
             <div class="send_to_page">
-                <a class="btn_open_modal" href="#">
+                <a showDiv='estoqueProduto' class="btn_open_modal" href="#">
                     <div class="send_to_page--wraper">
                         <h3>Editar estoque</h3>
                         <div class="send_to_page--icon">
@@ -49,7 +60,7 @@
 
         <div class="contents wd20 ">
             <div class="send_to_page">
-                <a class="btn_open_modal" href="#">
+                <a showDiv='imagensProduto' class="btn_open_modal" href="#">
                     <div class="send_to_page--wraper">
                         <h3>Editar imagens</h3>
                         <div class="send_to_page--icon">
@@ -67,7 +78,7 @@
 
 <div class="editar_produto--modal">
 
-    <div class="dados_produto">
+    <div id="dadosProduto" class="dados_produto modal-hide ">
         <div class="contents">
             <h2 class="titulo_principal">Editar dados do produto</h2>
                 </br>       
@@ -75,35 +86,58 @@
                 <div class="input_box">
                     <label class="description">Escolher categoria</label>
                     <select name="categoria" id="" required>
-                       
+                       <?php
+                            $produto = $dados['produto'];                          
+                            foreach($dados['categorias'] as $key => $value):
+                       ?>
+                        <option value="<?= $value['id_code']?>" <?= $value['id_code'] === $produto['id_categoria'] ? 'selected' : ''?> >
+                            <?= $value['nome']?>
+                        </option>
+                       <?php endforeach;?>
                     </select>
                 </div>
         
                 <div class="input_box">
-                    <label class="description">Nome para o produto*</label>
-                    <input class="input" type="text" name="nome" placeholder="Nome..." value="<?= @$dados['nome']?>" required>
+                    <label class="description">Editar nome para o produto*</label>
+                    <input class="input" type="text" name="nome" placeholder="Nome..." value="<?= @$produto['nome']?>" required>
                 </div>
         
                 <div class="input_box">
-                    <label class="description">Referência para o produto*</label>
-                    <input class="input" type="number" name="referencia" placeholder="Referência..." value="<?= @$dados['referencia']?>" required>
+                    <label class="description">Editar referência para o produto*</label>
+                    <input class="input" type="number" name="referencia" placeholder="Referência..." value="<?= @$produto['referencia']?>" required>
                 </div>
         
                 <div class="input_box">
-                    <label class="description">Peso do produto <small>*em gramas*</small> </label>
-                    <input class="input" type="number" name="peso" placeholder="EXE: 400g, 1000g e só é necessario apenas os numeros..." value="<?= @$dados['peso'] * 1000?>" required>
+                    <label class="description">Editar peso do produto <small>*em gramas*</small> </label>
+                    <input class="input" type="number" name="peso" placeholder="EXE: 400g, 1000g e só é necessario apenas os numeros..." value="<?= @$produto['peso'] * 1000?>" required>
+                </div>
+                
+                <div class="input_box_check">
+                    <fieldset>
+                        <legend>Editar tamanhos do produto</legend>
+                        <?php
+                            $tamanhos = json_decode($produto['tamanhos']);
+                            foreach ($tamanhos as $key => $value) :
+                        ?>
+                            <div class="check">
+                                <input class="input" type="checkbox" name='tamanhos[]' value="<?=$value?>" checked>
+                                <label class="description"><?=$value?></label>
+                            </div>
+                        <?php endforeach;?>
+                      
+                    </fieldset>
                 </div>
         
                 <div class="gp_input_box">
         
                     <div class="input_box">
                         <label class="description">Preço de atacado</label>
-                        <input class="input" type="number" name="atacado" placeholder="Preço do produto em atacado..." value="<?= @$dados['preco_atacado']?>" required>
+                        <input class="input" type="number" name="atacado" placeholder="Preço do produto em atacado..." value="<?= @$produto['preco_atacado']?>" required>
                     </div>
         
                     <div class="input_box">
                         <label class="description">Preço de varejo</label>
-                        <input class="input" type="number" name="varejo" placeholder="Preço do produto em varejo..." value="<?= @$dados['preco_varejo']?>" required>
+                        <input class="input" type="number" name="varejo" placeholder="Preço do produto em varejo..." value="<?= @$produto['preco_varejo']?>" required>
                     </div>
         
                 </div><!--gp_input_box-->
@@ -111,19 +145,20 @@
                 <div class="input_box">
                     <input class="submit" type="submit" name="acao-dados" value="Editar dados">
                 </div>
+
             </form>
 
         </div><!--contents-->
     </div>
 
-    <div class="estoque_produto">
+    <div id="estoqueProduto" class="estoque_produto modal-hide ">
         <div class="contents">
             <h2 class="titulo_principal">Estoque do produto</h2>
             <br>
             <form method="POST">
                 <div class="input_box">
                     <label class="description">Quantidade do produto</label>
-                    <input class="input" type="number" name="quantidade" placeholder="Inserir numeros inteiros..." value="<?= @$dados['quantidade']?>" required>
+                    <input class="input" type="number" name="quantidade" placeholder="Inserir numeros inteiros..." value="<?= @$produto['quantidade']?>" required>
                 </div>
 
                 <div class="input_box">
@@ -133,14 +168,14 @@
         </div>
     </div>
 
-    <div class="imagens_produto">
+    <div id="imagensProduto" class="imagens_produto modal-hide">
 
         <div class="contents">
             <h2 class="titulo_principal">Imagens do produto</h2>
             <br>
             <div class="all_img">
                 <?php
-                    foreach ($dados['images'] as $key => $value):
+                    foreach ($produto['images'] as $key => $value):
                 ?>  
                     <div class="img_box">
                         <a href="<?= PATH_URL.'painel/gerenciar/produto/?code='.$_GET['code'].'&img-delete='.$value['id']?>">
@@ -157,6 +192,8 @@
         </div>
 
         <div class="contents">
+            <h3 class="titulo_principal">Escolher mais imagens para o produto</h3>
+            <br>
             <form method="POST">
                 <div class="input_box">
                     <label class="description">Escolher imagens</label>
@@ -172,3 +209,5 @@
     </div>
 
 </div>
+
+<script src="<?= PATH_URL.'assets/js/dasboard/editar-produto.js'?>"></script>

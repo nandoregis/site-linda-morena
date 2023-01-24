@@ -32,22 +32,32 @@ class Produto extends CadastroPainelSubController
 
     private function insertProductAtTheDatabase( array $dados) 
     {
-        // ---> id_code, id_categoria, nome, referencia, peso, quantidade, atacado, varejo, disponivel, slug e id_order.
+        // ---> id_code, id_categoria, nome, referencia, peso, quantidade, atacado, varejo, tamanhos, disponivel, slug e id_order.
         $idCode = $this->gerarIdCode();
+        $nome = $this->capitalFirstLetter($dados['nome']);
         $slug = self::generateSlug($dados['nome']);
         $idOrder = $this->produto->theAmount() + 1;
         $peso = $this->convertKiloToGrams(intval($dados['peso']));
+        $tamanhos = $this->convertArrayToJson($dados['tamanhos']);
         $disponivel = intval($dados['quantidade']) > 0 ? 1 : 0;
 
-        $sendData = [ $idCode, $dados['categoria'], $dados['nome'], intval($dados['referencia']),
-        $peso, intval($dados['quantidade']), intval($dados['atacado']), intval($dados['varejo']), $disponivel, $slug, $idOrder ];
+        $sendData = 
+        [ 
+            $idCode, $dados['categoria'], $nome, intval($dados['referencia']),
+            $peso, intval($dados['quantidade']), intval($dados['atacado']),
+            intval($dados['varejo']), $tamanhos, $disponivel, $slug, $idOrder 
+        ];
 
         $checkProduto = $this->produto->add($sendData);
         $checkImages = $this->insertImagesAtTheDatabase($dados['files'], $idCode);
         
-        if ($checkImages === false ) return false;
+        if ($checkImages === false || !$checkProduto) return false;
 
         return true;
+    }
+    //convert array to json
+    private function convertArrayToJson(array $arr) {
+        return json_encode($arr);
     }
 
     private function insertImagesAtTheDatabase( array $files, $idProduto) 
@@ -94,8 +104,8 @@ class Produto extends CadastroPainelSubController
 
         foreach ($post as $key => $value) {
             if($value === "") {
-                $check = false;
                 $this->setAlertMessage(false,"Campos vazios não são permitidos!");
+                return false;
             }
         }
 
@@ -127,17 +137,21 @@ class Produto extends CadastroPainelSubController
         return $nome;
     }
 
-    private function checkIfExistReferenceInDatabase($ref) {
-        return $this->produto->checkProductInDatabase('referencia',$ref);
+    private function checkIfExistReferenceInDatabase($ref, $id_code = null) {
+        return $id_code === null ? $this->produto->checkProductInDatabase('referencia',$ref) : 
+        $this->produto->checkProductInDatabase('referencia',$ref, $id_code);
     }
 
-    private function validateReferenceInput($ref) {
+    private function validateReferenceInput($ref, $id_code = null) {
         $validateRef = true;
         
         $checkRef = $this->regexProductsInputs('referencia', $ref);
 
         if ( $checkRef ) {
-            $checkRef = $this->checkIfExistReferenceInDatabase($ref);
+
+            $checkRef = $id_code === null ? $this->checkIfExistReferenceInDatabase($ref) : 
+            $this->checkIfExistReferenceInDatabase($ref, $id_code);
+            // $checkRef = $this->checkIfExistReferenceInDatabase($ref);
             
             if ($checkRef) {
                 // sendo true significa que existe um produto com essa referência.
@@ -157,6 +171,15 @@ class Produto extends CadastroPainelSubController
         $peso = $this->regexProductsInputs('peso', $peso);
         if(!$peso) $this->setAlertMessage(false, 'Peso do não pode ter letra ou caracteres especiais');
         return $peso;
+    }
+
+    private function validateSizesInput($tamanhos){
+        if ( !$this->checkIfArrayIsNotEmpty($tamanhos) ) {
+            $this->setAlertMessage(false,'Não pode colocar o produto sem nenhum tamanho!');
+            return false;
+        }
+
+        return true;
     }
 
     private function validateCountInput($quantidade) {
@@ -193,7 +216,7 @@ class Produto extends CadastroPainelSubController
 
         return false;
     }
-
+    
     private function checkTypeFiles(array $types) {
 
         foreach ($types as $key => $value) {
@@ -207,7 +230,44 @@ class Produto extends CadastroPainelSubController
         return true;
     }
 
-    # metodos para upload de imagens.
+    private function validateFilesInput($files) {
+        $checkFiles = $this->checkIfArrayIsNotEmpty($files);
+
+        if (!$checkFiles) {
+            $this->setAlertMessage(false,'Precisa ter imagem do produto para poder fazer o cadastro.');
+            return false;
+        }
+
+        $checkFilesTypes = $this->checkTypeFiles($files['type']);
+   
+        if ( !$checkFilesTypes ) {
+            $this->setAlertMessage(false,'Formato da imagem não suportada, formatos aceitos - png,jpg e jpeg');
+            $checkFiles = $checkFilesTypes;
+        }
+        
+        return $checkFiles;
+    }
+
+    private function checkAllFormInputs( array $arr ) {
+        foreach ($arr as $key => $value) {
+            if(!$value) return false;
+        };
+        return true;
+    }
+    
+    private function allFormInputs($post) 
+    {
+        return [
+            $this->validateNameInput($post['nome']),
+            $this->validateReferenceInput($post['referencia']),
+            $this->validateWeightInput($post['peso']),
+            $this->validateCountInput($post['quantidade']),
+            $this->validateWholesaleInput($post['atacado']),
+            $this->validateRetailInput($post['varejo']),
+            $this->validateSizesInput($post['tamanhos'])
+        ];
+        
+    }
 
     private function changeFilesNameAndComeBack(array $nomes) :array
     {      
@@ -219,7 +279,10 @@ class Produto extends CadastroPainelSubController
         }
         return $newNames;
     }
-
+    /**
+     *  -> metodos para upload de imagens
+     */
+    
     private function uploadFile($tmp_name, $file_name) 
     {
         // diretorio EXE: --> assets/upload/arquivo.jpg
@@ -239,51 +302,15 @@ class Produto extends CadastroPainelSubController
 
         return true;
     }
+    /*---------------------------------------------*/
     
-    private function validateFilesInput($files) {
-        $checkFiles = $this->checkIfArrayIsNotEmpty($files);
-
-        if (!$checkFiles) {
-            $this->setAlertMessage(false,'Precisa tem imagem do produto para poder fazer o cadastro.');
-            return false;
-        }
-
-        $checkFilesTypes = $this->checkTypeFiles($files['type']);
-   
-        if ( !$checkFilesTypes ) {
-            $this->setAlertMessage(false,'Formato da imagem não suportada, formatos aceitos - png,jpg e jpeg');
-            $checkFiles = $checkFilesTypes;
-        }
-        
-        return $checkFiles;
-    }
-
-    // db produtos.
-    private function checkAllFormInputs( array $arr ) {
-        foreach ($arr as $key => $value) {
-            if(!$value) return false;
-        };
-        return true;
-    }
-    
-    private function allFormInputs($post) 
-    {
-        return [
-            $this->validateNameInput($post['nome']),
-            $this->validateReferenceInput($post['referencia']),
-            $this->validateWeightInput($post['peso']),
-            $this->validateCountInput($post['quantidade']),
-            $this->validateWholesaleInput($post['atacado']),
-            $this->validateRetailInput($post['varejo'])
-        ];
-        
-    }
-
     private function validateProductInputs($post) 
     {
         $check = $this->checkIfExistEmptyInputs($post);
         
         if( $check ) {
+
+            $post['tamanhos'] = isset($post['tamanhos']) ? $post['tamanhos'] : [];
 
             $form = $this->allFormInputs($post);
             $checkInputsResults = $this->checkAllFormInputs($form);
@@ -313,11 +340,11 @@ class Produto extends CadastroPainelSubController
         return $condiction;
     }
 
-    private function productRegister($post) {
-       
-       $form = $this->checkInformationForm($post);
+    private function productRegister($post)
+     {
+        $form = $this->checkInformationForm($post);
 
-       if ($form) {
+        if ($form) {
         
             $form = $this->insertProductAtTheDatabase($post);
             if($form){
@@ -325,16 +352,126 @@ class Produto extends CadastroPainelSubController
             }else {
                 $this->setAlertMessage(false,'Erro a o cadastrar!');
             }
-       }
+        }
+        return $form;
+    }
 
-       return $form;
+    /**-------------------------------------------- */
+    /**     
+    *      -> Updates do produto.
+    */
+
+    private function allFormInputsUpdate($post) 
+    {
+        return [
+            $this->validateNameInput($post['nome']),
+            $this->validateReferenceInput($post['referencia'], $this->getUrlProductIdCode()),
+            $this->validateWeightInput($post['peso']),
+            $this->validateSizesInput($post['tamanhos']),
+            $this->validateWholesaleInput($post['atacado']),
+            $this->validateRetailInput($post['varejo']),
+        ];
+        
+    }
+
+    private function getUrlProductIdCode() {
+        if(!isset($_GET['code'])) return false;
+        return $_GET['code'];
+    }
+
+    private function updateDataOfDatabase ($post) {
+        // id_categoria, nome, referencia, peso, tamanhos, preco_atacado, preco_varejo, slug - where : id_code do produto
+        $nome = $this->capitalFirstLetter($post['nome']);
+        $slug = self::generateSlug($post['nome']);
+        $tamanhos = $this->convertArrayToJson($post['tamanhos']);
+        $peso = $this->convertKiloToGrams(intval($post['peso']));
+        $idCodeProduto = $this->getUrlProductIdCode();
+
+        $dados = [$post['categoria'], $nome, intval($post['referencia']), $peso,
+        $tamanhos, intval($post['atacado']), intval($post['varejo']), $slug, $idCodeProduto];
+
+        return $this->produto->updateDados($dados);
+    }
+
+    private function updateStockOfDatabase($post) {
+        // quantidade - id_code 
+        $quantidade = intval($post['quantidade']);
+        $idCode = $this->getUrlProductIdCode();
+
+        return $this->produto->updateStock([$quantidade, $idCode]);
+    }
+
+    private function validateUpdateProductData($post) {
+            // pode executar o codigo..
+        $post['tamanhos'] = isset($post['tamanhos']) ? $post['tamanhos'] : [];
+        $form = $this->allFormInputsUpdate($post);
+        $check = $this->checkAllFormInputs($form);
+
+        if(!$check)  return false;
+    
+        return $check;
+    }
+
+    private function checkInformationUpdateData($post) {
+        $check = $this->checkIfArrayIsNotEmpty($post);
+
+        if(!$check) {
+            $this->setAlertMessage(false, "Adicione informações nos inputs!");
+            return false;
+        }
+        
+        $check = $this->validateUpdateProductData($post);
+        if(!$check) return false;   
+        
+        return true;
+
+    }
+
+    private function checkInformationUpdateEstoque($post) {
+        $check = $this->checkIfArrayIsNotEmpty($post);
+        if(!$check) {
+            $this->setAlertMessage(false, "Adicione informações nos inputs!");
+            return false;
+        }
+
+        $quant = $this->validateCountInput($post['quantidade']);
+        if(!$quant) return false;
+        return true;
     }
 
      /**----------------------- */
 
-    public function theProductFilesSubmitForm(array $files) {
+    public function updateProductStock($post) {
+        $check = $this->checkInformationUpdateEstoque($post);
+        if ($check) {
+        
+            if (!$this->updateStockOfDatabase($post)) {
+                $this->setAlertMessage(false, "Não foi possivel editar, tente mais tarde ou entre em contato com o desenvolvedor!");
+                return false;
+            }
 
+            $this->setAlertMessage(true, "Estoque editado com sucesso!");
+            return true;
+            
+        }else return false;
     }
+
+    public function updateProductData($post) {
+        
+        $check = $this->checkInformationUpdateData($post);
+        if ($check) {
+
+            if (!$this->updateDataOfDatabase($post)) {
+                $this->setAlertMessage(false, "Não foi possivel editar, tente mais tarde ou entre em contato com o desenvolvedor!");
+                return false;
+            }
+
+            $this->setAlertMessage(true, "Dados editados com sucesso!");
+            return true;
+
+        } else return false;
+    }
+
     public function theProductSubmitForm(array $post, $insertOrUpdate) {
         
         switch ($insertOrUpdate) {
