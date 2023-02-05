@@ -8,7 +8,7 @@
                 </svg>
             </div>
             
-            <h3>Nome do usuario</h3>
+            <h3><?= @$_SESSION['NOME_ADMIN']?></h3>
 
         </div>
     </div>

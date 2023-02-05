@@ -4,7 +4,7 @@ namespace Views;
 
 class View
 {
-
+    private $page;
     public function __construct($pagina)
     {
         $this->page = $pagina;

@@ -1,7 +1,8 @@
 <?php
 
-namespace Controllers\Sub;
+namespace Controllers\Painel;
 use Models\CategoriaModel;
+use Models\ProdutoModel;
 
 /**
  * 
@@ -11,8 +12,10 @@ use Models\CategoriaModel;
 class Categoria extends CadastroPainelSubController
 {   
     private $categoria;
+    private $produtoModel;
+    private $produto;
     private $alertMessage = [
-        'sucess',
+        'success',
         'message',
     ];
     private $database;
@@ -20,6 +23,8 @@ class Categoria extends CadastroPainelSubController
     public function __construct()
     {
         $this->categoria = new CategoriaModel;
+        $this->produtoModel = new ProdutoModel;
+        $this->produto = new Produto;
     }
 
     /**
@@ -54,7 +59,7 @@ class Categoria extends CadastroPainelSubController
     
     private function regexNameCategory($nome) {
         // '/^[a-z\t-]{4,}$/',
-        $pattern = "/^[a-zA-Z\t-]{4,}$/";
+        $pattern = "/^[a-zA-Z\s-]{4,}$/";
         return preg_match($pattern, $nome);
     }
 
@@ -72,7 +77,7 @@ class Categoria extends CadastroPainelSubController
             if($checkName) {
                 // existe no banco de dados não pode cadastrar
                 $condiction = false;
-                $this->setAlertMessage(false,'Já existe uma categoria com esse nome, não pode cadastrar, escolha outro nome!');
+                $this->setAlertMessage(false,'Já existe uma categoria com esse nome!');
             }
         }
         
@@ -107,16 +112,38 @@ class Categoria extends CadastroPainelSubController
         return $infoForm;
     }
 
+    public function updateCategory($post) {
+        $checkCategory = $this->checkInformationForm($post);
+        
+        if ( $checkCategory ) {
+            $checkCategory = $this->updateCategoryAtTheDataBase($post);
+           
+            $this->setAlertMessage(true,'Categoria editada com sucesso!');
+
+            $checkCategory === true 
+            ? $this->setAlertMessage(true,'Categoria editada com sucesso!')
+            : $this->setAlertMessage(false,'O correu um erro ao editar!');
+        } 
+
+        return $checkCategory;
+    }
+
+    private function updateCategoryAtTheDataBase($dados_post) {
+        $nome = $this->capitalFirstLetter($dados_post['nome']); 
+        $id = intval($dados_post['id-categoria']);
+        return $this->categoria->update([$nome, $id]);
+    }
+
     public function theCategorySubmitForm( array $dadosArr, string $insertOrUpdate )
     {   
 
         switch ($insertOrUpdate) {
             case 'insert':
-                    return $this->categoryRegister($dadosArr);
+                return $this->categoryRegister($dadosArr);
                 break;
 
             case 'update':
-                # code...
+            
                 break;
             
             default:
@@ -126,7 +153,19 @@ class Categoria extends CadastroPainelSubController
 
     }
 
-  
+    public function deleteCategory($id) {
+        // para deletar categoria devo deletar o produto que contem a categoria
+        $categoria = $this->categoria->get('id', $id);
+        $produtos = $this->produtoModel->selectAllByParamenter('id_categoria',$categoria['id_code']);
+
+        foreach ($produtos as $key => $value) {
+            $this->produto->deleteDatabaseProduct($value['id_code']);
+        }
+
+        $this->categoria->delete($id);
+        self::urlRedirectPath('gerenciar/categorias/');
+    }
+
 }
 
 ?>

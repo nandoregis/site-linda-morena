@@ -2,9 +2,9 @@
 
 namespace Controllers;
 
-use Controllers\Sub\GerenciarPainelSubController;
-use Controllers\Sub\CadastroPainelSubController;
-use Controllers\Sub\InicioPainelSubController;
+use Controllers\Painel\GerenciarPainelSubController;
+use Controllers\Painel\CadastroPainelSubController;
+use Controllers\Painel\InicioPainelSubController;
 use Models\AdminModel;
 use Views\ViewPainel;
 use Exception;
@@ -12,7 +12,7 @@ use Exception;
 class PainelController
 {   
 
-    private $loginOfAdmin;
+    private $admin;
     private $paginaInicio;
     private $paginaCadastro;
     private $paginaGerenciar;
@@ -20,7 +20,7 @@ class PainelController
 
     public function __construct()
     {
-        $this->loginOfAdmin = new AdminModel;
+        $this->admin = new AdminModel;
         $this->paginaInicio = new InicioPainelSubController;
         $this->paginaCadastro = new CadastroPainelSubController;
         $this->paginaGerenciar = new GerenciarPainelSubController;
@@ -38,52 +38,7 @@ class PainelController
     {   
         if( !is_array($dados)) return false;
         $this->includePage('admin')->render($dados, $subPageName); 
-    }
-    
-    private function validationAdminlogin() 
-    {
-        try {
-
-            if ( isset($_POST['action']) ) 
-            {   
-
-                $user = $_POST['user'];
-                $password = $_POST['password'];
-
-                $loginSuccess = $this->loginOfAdmin->connectAdmin($user, $password);
-    
-                if (!$loginSuccess) {
-                    throw new Exception('Conta não existe');
-
-                } else {
-                    $loginSuccess = count($loginSuccess) > 0 ? 
-                    $this->generateAdminLoginToken($loginSuccess['id']) : false;
-
-                    return $loginSuccess;
-                }
-        
-            }
-
-        } catch (Exception $e) {
-            return false;
-        }     
-
-    }
-    
-    private function generateAdminLoginToken($id)
-    {   
-        $token = $_SESSION['ACCESS_ADMIN_TOKEN'] = uniqid('', true);
-        $this->loginOfAdmin->updateAdminLoginToken($token, $id);
-        return $token;
-    }
-  
-    private function verificationTheLoginToken() 
-    {   
-        /**
-         *  TODO: fazer requisição no banco de dados para ver se token ainda é valido
-         */
-        return isset($_SESSION['ACCESS_ADMIN_TOKEN']);
-    }
+    }    
  
     private function accessOfAdminLogin()
     {
@@ -100,18 +55,92 @@ class PainelController
         }
     }
 
+    private function verificationTheLoginToken() 
+    {   
+
+        if( !isset($_SESSION['ACCESS_ADMIN_TOKEN']) ) return false;
+
+        $token = $_SESSION['ACCESS_ADMIN_TOKEN'];
+        $validationToken = $this->admin->verificAdminLoginToken($token);
+        
+        if(!$validationToken) {
+            $this->sessionsDestroy();
+            return false;
+        } else return true;
+        
+    }
+    private function sessionsDestroy() {
+        session_destroy();
+        self::urlRedirectPath();
+    }
+
+    private function validationAdminlogin() 
+    {
+        try {
+
+            if ( isset($_POST['action']) ) 
+            {   
+
+                $user = $_POST['user'];
+                $password = $_POST['password'];
+
+                $loginSuccess = $this->admin->connectAdmin($user, $password);
+    
+                if (!$loginSuccess) {
+                    throw new Exception('Conta não existe');
+
+                } else {
+                    $loginSuccess = count($loginSuccess) > 0 ? 
+                    $this->generateAdminLoginToken($loginSuccess) : false;
+                    
+                    return $loginSuccess;
+                }
+        
+            }
+
+        } catch (Exception $e) {
+            return false;
+        }     
+
+    }
+
+    private function generateLoginSessions(array $usuario) {
+
+        return [
+            'session_nome' => $_SESSION['NOME_ADMIN'] = $usuario['nome'],
+            'session_token' => $_SESSION['ACCESS_ADMIN_TOKEN'] = uniqid('', true)
+        ];
+    }
+
+    private function generateAdminLoginToken(array $usuario)
+    {   
+        $token = $this->generateLoginSessions($usuario)['session_token'];
+        $this->admin->updateAdminLoginToken($token, $usuario['id']);
+        return $token;
+    }
+
     /**     
      *  - Funções de quando o usuario estiver logado no painel administrativo. 
      */
+
+    private function checkAdminLoggout() {
+        if(isset($_GET['loggout'])) {
+            $this->sessionsDestroy();
+        }
+    }
 
     private function adminPagesInit()
     {
         if (!$this->adminPagesRoutes() ) self::urlRedirectPath('inicio');
     }
+    
+    protected static function urlRedirectPath( string $path = null) 
+    {   
+        $uri = PATH_URL.'painel/';
 
-    protected static function urlRedirectPath( string $path) 
-    {
-        header('Location:'.PATH_URL.'painel/'.$path);
+        if($path) $uri = PATH_URL.'painel/'.$path;
+
+        echo "<script>location.href='$uri';</script>";
         die();
     }
 
@@ -157,14 +186,17 @@ class PainelController
         } else return false;
     }
 
+    /* --- METODOS DAS ROTAS --- */
     private function paginaAdminInicio() {  $this->paginaInicio->init(); }
     private function paginaAdminCadastro() { $this->paginaCadastro->init(); }
     private function paginaAdminGerenciar() { $this->paginaGerenciar->init(); }
-
+    /*--------------------------*/
     public function executar() 
     {   
-
-       if ($this->accessOfAdminLogin() ) {
+        
+        $this->checkAdminLoggout();
+        
+        if ($this->accessOfAdminLogin() ) {
             # - pagina do adm
             $this->adminPagesInit();
         } else {

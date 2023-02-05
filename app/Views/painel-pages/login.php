@@ -12,13 +12,15 @@
 <body>
     <div class="login">
         <div class="login--container">
-            <h3>Efetuar login</h3>
-            <div class="login--form">
-                <form method="POST">
-                    <input type="text" name="user" placeholder="User...">
-                    <input type="password" name="password" placeholder="Passoword...">
-                    <input type="submit" name="action" value="Connect">
-                </form>
+            <div class="login--wraper">
+                <h3>Efetuar login</h3>
+                <div class="login--form">
+                    <form method="POST">
+                        <input type="text" name="user" placeholder="User...">
+                        <input type="password" name="password" placeholder="Passoword...">
+                        <input type="submit" name="action" value="Login">
+                    </form>
+                </div>
             </div>
         </div>
     </div>

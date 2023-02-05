@@ -1,6 +1,6 @@
 <?php
 
-    namespace Controllers\Sub;
+    namespace Controllers\Painel;
 
     interface SubController
     {

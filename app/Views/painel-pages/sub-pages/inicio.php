@@ -6,12 +6,12 @@
 
     <div class="contents wd50">
         <h3><?= 'Total de produtos' ?></h3>
-        <h2 class='quantidade'>20</h2>
+        <h2 class='quantidade'><?= $dados['produtos']?></h2>
     </div>
     
     <div class="contents wd50">
         <h3><?= 'Total de categorias' ?></h3>
-        <h2 class='quantidade'>5</h2>
+        <h2 class='quantidade'><?= $dados['categorias']?></h2>
     </div>
 </div>
 

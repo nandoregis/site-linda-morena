@@ -33,6 +33,12 @@ class AdminModel
         
     }
 
+    public function verificAdminLoginToken(string $token) {
+        $this->sql = $this->db->connect()->prepare("SELECT * FROM `tb_admin.login` WHERE token = ?");
+        $this->sql->execute([$token]);
+        return $this->sql->rowCount() === 0 ? false : true;
+    }
+
 }
 
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Controllers\Sub;
+namespace Controllers\Painel;
 
 use Controllers\PainelController;
 use Route;
@@ -74,7 +74,7 @@ class CadastroPainelSubController extends PainelController implements SubControl
            
             $post['files'] = isset($_FILES['image']) ? $_FILES['image'] : [];
 
-            $post = $this->produto->theProductSubmitForm($post, 'insert');
+            $post = $this->produto->productRegister($post);
             
             if (!$post) $this->dados['inputs'] = $this->produto->getValuesInputs();
             $this->dados['mensagem'] = $this->produto->getAlertMessage();

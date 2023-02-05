@@ -20,13 +20,13 @@ class ViewPainel
         if ($result) {
             echo "
                 <div class='box_alert success'>
-                <p>$mensagem</p>
+                <p><i class='fa-solid fa-check'></i> $mensagem</p>
                 </div>
             ";
         }else {
             echo "
                 <div class='box_alert erro'>
-                <p>$mensagem</p>
+                <p><i class='fa-solid fa-circle-xmark'></i> $mensagem</p>
                 </div>
             ";
         }

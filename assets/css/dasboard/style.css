@@ -19,7 +19,6 @@ body {
     background: var(--background-body);
  }
 
-
 /* --- classes - mini-framework ----*/
 
 .contents {
@@ -68,10 +67,10 @@ body {
 
 /*-------------- MESSAGEM DE FORMULARIO ----------------*/
 .box_alert {
-    position: absolute;
+    position: fixed;
     top: 0;
-    left: -200px;
-    width: calc(100% + 200px);
+    left: 0;
+    right: 0;
     padding: 10px;
     z-index: -1;
 
@@ -81,9 +80,10 @@ body {
 .box_alert.erro { background-color: rgba(248, 79, 79, 0.5); }
 .box_alert p {
     font-size: 15px;
-    padding-left: 230px;
+    padding-left: 200px;
+    color: #353535;
 }
-
+.box_alert p i {color: inherit;}
 
 /*----------- input_box -------------*/
 
@@ -95,7 +95,8 @@ body {
 
 .input_box, .input_box_check { margin-bottom: 10px; }
 
-.input_box input, .input_box select {
+.input_box input, 
+.input_box select {
     width: 100%;
     height: 40px;
     border: 1px solid #ccc;
@@ -130,6 +131,30 @@ body {
     cursor: pointer;
 }
 
+/* -- loggout ---*/
+
+.loggout {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    z-index: 100;
+}
+
+.loggout a#sair {
+    color: #353535;
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 1px 1px 10px 1px #353535;
+}
+
+.loggout a#sair:hover {
+    transform: scale(1.02);
+}
 
 /* -- variaveis ---*/
 :root {
@@ -148,6 +173,23 @@ body {
 
 .login--container {
     width: 30%;
+    height: 400px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 0px 10px 1px rgb(90, 90, 90);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login--wraper {
+    width: 80%;
+    height: 60%;
+}
+
+.login--wraper h3 {
+    margin-bottom: 10px;
+    font-weight: normal;
+    font-size: 23px;
 }
 
 .login--form input {
@@ -156,7 +198,15 @@ body {
     margin-bottom: 10px;
     padding-left: 10px;
     outline: none;
-    
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.login--form input[type=submit] {
+    background-color: #64BD6D;
+    color: #353535;
+    font-size: 17px;
+    cursor: pointer;
 }
 
 /* ------------- ESTILO DA PAGINA ADIMINISTRATIVA ---------------   */
@@ -374,7 +424,7 @@ section#admin {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 50%;
+    width: 70%;
     background-color: rgba(224, 33, 33, 0.6);
     border-radius: 20px;
     padding: 20px;
@@ -458,16 +508,23 @@ section#admin {
     transform: scale(.99);
     box-shadow: 0 5px 10px 2.5px rgb(117, 117, 117);
 }
+.editar_produto--modal > .imagens_produto .all_img {
+    display: flex;
+    flex-wrap: wrap;
+}
 
 .editar_produto--modal > .imagens_produto .img_box {
     width: 200px;
+    height: 250px;
     position: relative;
+    transform: scale(0.97);
 }
 
 .editar_produto--modal .modal-hide { display: none; }
 
 .editar_produto--modal > .imagens_produto img {
     width: 100%;
+    height: inherit;
     border-radius: 10px;
 }
 
@@ -490,15 +547,109 @@ section#admin {
     background-color: rgba(255, 255, 255, 0.7);
 }
 
-
 .editar_produto--modal .input_box input.submit {
     background-color: #64BD6D;
+}
+
+.config_produto--excluir {
+    padding: 10px;
+    background-color: rgb(238, 238, 238);
+}
+
+.config_produto--excluir a {
+    color: #ececec;
+    background-color: rgb(201, 55, 55);
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* ------------ PAGINA CATEGORIAS ------------------*/
+
+.categorias h2 {margin-bottom: 10px;}
+.categorias--header {
+    background-color: #8fb4e2;
+    padding: 10px;
+}
+
+.categorias--header p,
+.categorias--header i {
+    color: #353535;
+}
+
+.categorias--itens li {
+    border: 1px solid #ccc;
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}   
+
+.item_categ .categ {
+    background-color: rgb(221, 221, 221);
+    padding: 10px;
+}
+
+.item_categ .item_categ--info i {
+    color: #4176b8;
+}
+
+.item_categ .categ.edit {
+    background-color: orange;
+    cursor: pointer;
+}
+.item_categ .categ.delete {
+    background-color: #ed5656;
+    padding: 0;
+    cursor: pointer;
+}
+.item_categ .categ.delete a {
+    padding: 10px;
+    display: inline-block;
+}
+
+.item_categ .item_categ--config {display: flex;}
+.item_categ .item_categ--config i {
+    color: #353535;
+}
+
+.categorias--modal_edit {
+    position: fixed;
+    top: 0; 
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(70, 70, 70, 0.5);
+}
+
+.categorias--modal_edit.hide {display: none;}
+
+.categorias--modal_edit > .contents {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-30%, -50%);
+    box-shadow: 1px 1px 5px 1px rgb(82, 82, 82);
+}
+
+.categorias--modal_edit input.submit {
+    background-color: #64BD6D;
+}
+
+.modal_edit--exit {
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    cursor: pointer;
 }
 
 /* ---- MEDIA SCREEN -----*/
 
 @media screen and (max-width: 1635px) {
-    .cadastros > .contents {
+    .cadastros > .contents, 
+    .gerenciar > .contents,
+    .editar_produto--nav >.contents { 
         width: 25%;
     }
 }
@@ -507,23 +658,52 @@ section#admin {
     .cadastros h3 {
         font-size: 20px;
     }
+
+    .produtos .card  {
+        width: calc(100% / 4);
+    }
 }
 
 @media screen and (max-width: 1200px) {
     
-    .cadastros > .contents {
+    .cadastros > .contents,
+    .gerenciar > .contents,
+    .editar_produto--nav > .contents  {
         width: 33.3%;
     }
+
+    .produtos .card  {
+        width: calc(100% / 3);
+    }
+
 }
 
+@media screen and (max-width: 960px) {
+
+    .produtos .card  {
+        width: calc(100% / 2);
+    }
+
+}
 
 @media screen and (max-width: 680px) {
-    .cadastros > .contents {
+    .cadastros > .contents,
+    .gerenciar > .contents,
+    .editar_produto--nav > .contents {
         width: 50%;
     }
+
+    .produtos .card  {width: 100%;}
 }
 
 @media screen and (max-width: 600px) {
+    .menu {
+        width: 150px;
+    }
+    .main {
+        width: calc(100% - 150px);
+        padding: 40px 20px;
+    }
 
     .informacao_estoque {
         flex-wrap: wrap;
@@ -531,7 +711,24 @@ section#admin {
     .informacao_estoque > .contents { width: 100%; }
     .informacao_estoque .contents:nth-of-type(1) { margin-right: 0; }
 
-    .cadastros > .contents {
+    .cadastros > .contents,
+    .gerenciar > .contents,
+    .editar_produto--nav > .contents  {
         width: 100%;
     }
+    .editar_produto--nav > .contents  .send_to_page--wraper {
+       padding: 10px;
+    }
+    .editar_produto--nav > .contents svg {
+        display: none;
+    }
+
+    .input_box input.submit {
+        width: 100%;
+    }
+    
+    .item_categ .categ i {
+        font-size: 12px;
+    }
 }
+

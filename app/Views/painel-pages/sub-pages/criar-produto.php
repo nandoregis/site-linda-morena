@@ -59,31 +59,15 @@
             <div class="input_box_check">
                 <fieldset>
                     <legend>Escolher tamanhos do produto</legend>
-
-                    <div class="check">
-                        <input class="input" type="checkbox" name='tamanhos[]' value="PP">
-                        <label class="description">PP</label>
-                    </div>
-
-                    <div class="check">
-                        <input class="input" type="checkbox" name='tamanhos[]' value="P">
-                        <label class="description">P</label>
-                    </div>
-
-                    <div class="check">
-                        <input class="input" type="checkbox" name='tamanhos[]' value="M">
-                        <label class="description">M</label>
-                    </div>
-
-                    <div class="check">
-                        <input class="input" type="checkbox" name='tamanhos[]' value="G">
-                        <label class="description">G</label>
-                    </div>
-
-                    <div class="check">
-                        <input class="input" type="checkbox" name='tamanhos[]' value="GG">
-                        <label class="description">GG</label>
-                    </div>
+                    <?php
+                        $tamanhos = TAMANHOS_PRODUTO;
+                        foreach ($tamanhos as $key => $value) :
+                    ?>
+                        <div class="check">
+                            <input class="input" type="checkbox" name='tamanhos[]' value="<?= $value?>">
+                            <label class="description"><?= $value?></label>
+                        </div>
+                    <?php endforeach;?>
                     
                 </fieldset>
             </div>
@@ -109,7 +93,7 @@
 
             <div class="input_box">
                 <label class="description">Escolher imagens</label>
-                <input class="input" type="file" name="image[]" multiple="multiple" placeholder="Escolher imagens..." required>
+                <input id="criar_produto_img" class="input" type="file" name="image[]" multiple="multiple" placeholder="Escolher imagens..." required>
             </div>
 
 
