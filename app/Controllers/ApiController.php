@@ -36,7 +36,11 @@ class ApiController
 
     Route::get('api/v1/produtos/:id', function ($id) {
       $produtos = $this->produtoModel->selectAll('id_categoria', $id);
-      $produtos[0]['tamanhos'] = json_decode($produtos[0]['tamanhos']);
+
+      if($produtos) {
+        $produtos[0]['tamanhos'] = json_decode($produtos[0]['tamanhos']);
+      }
+      
       print_r(json_encode($produtos));
     });
     

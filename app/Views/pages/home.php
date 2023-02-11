@@ -16,8 +16,7 @@
     <section class="banner">
         <div class="banner--overlay"></div>
     </section>
-
-    
+    <base href="<?=PATH_URL?>">
     <section class="produtos">
         <div id="produto" class="container">
             <nav class="produtos--nav">
