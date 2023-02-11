@@ -36,11 +36,19 @@
             </div><!--produtos--box-->
 
             <div class="produtos--paginacao">
-                
+                <ul>
+                    <li>1</li>
+                    <li>1</li>
+                    <li>1</li>
+                </ul>
             </div>
 
         </div>
     </section>
+
+    <?php 
+        include_once('./app/Views/pages/components/footer.php');
+    ?>
 
     <script src="<?= PATH_URL?>assets/js/home.js"></script>
 </body>

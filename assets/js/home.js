@@ -82,7 +82,8 @@
 
         }
 
-        teste() {
+        getDadosOrganizados() {
+
             let pages = this.quantidade_produto / this.limiteProdutos;
             pages = Math.ceil(pages);
             let caixa = [];
@@ -107,19 +108,25 @@
                 caixa[key].push(this.produtos[i]);
                 
             }
-            
-            this.caixas = caixa;
 
-            caixa.forEach(item => {
-            //    console.log(item);
+            return caixa;
+        }
+
+        incluirHTML() {
+
+            this.caixa = this.getDadosOrganizados();
+            
+            this.caixa.forEach(item => {
+  
                let div = this.criarBox();
-               
+
                 item.forEach(el => {
-                    
-                    const {nome, preco_atacado, preco_varejo} = el;
+                    const {nome, preco_atacado, preco_varejo, id_code, slug} = el;
                     let img = el.images[0].url_path
-                    let produto = new Produto(nome, img, preco_varejo, preco_atacado );
+
+                    let produto = new Produto(nome, img, preco_varejo, preco_atacado, id_code, slug );
                     produto = produto.criarHTMLProduto();
+
                     div.append(produto);
                 });
 
@@ -129,18 +136,19 @@
         }
 
         render() {
-            this.teste();
-            
+            this.incluirHTML();
         }
 
     }
 
     class Produto {
-        constructor(nome,img,varejo,atacado) {
+        constructor(nome, img, varejo, atacado, idCode, slug) {
             this.nome = nome;
             this.imgSrc = img;
             this.varejo = varejo;
             this.atacado = atacado;
+            this.slug = slug;
+            this.id_code = idCode;
         }
 
         criarHTMLProduto() {
@@ -169,8 +177,15 @@
 
             this.item.append(img);
             this.item.append(info);
+            this.eventoClick();
 
             return this.item;
+        }
+
+        eventoClick() {
+            this.item.addEventListener('click', () => {
+                location.href = BASE + 'produto/' + this.slug+'?id='+this.id_code;
+            });
         }
     }
 

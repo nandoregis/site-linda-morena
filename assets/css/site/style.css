@@ -146,6 +146,7 @@
 .produtos--wraper {
     width: 100%;
     display: flex;
+    min-height: 500px;
 }
 
 .produtos--itens {
@@ -156,14 +157,21 @@
 
 .produtos--itens > .item {
     width: 25%;
-    transform: scale(0.98);
+    transform: scale(0.96);
     text-align: center;
+    transition: 0.5s;
+}
+
+.produtos--itens > .item:hover {
+    cursor: pointer;
+    transition: 0.5s;
+    transform: scale(0.99);
 }
 
 .produtos--itens > .item img {
     width: 100%;
-    min-height: 300px;
-    max-height: 300px;
+    min-height: 350px;
+    max-height: 350px;
 }
 
 .produtos--itens > .item p {
@@ -174,4 +182,21 @@
     font-size: 18px;
     color: var(--text-cor);
     letter-spacing: 1.5px;
+}
+
+/* -- Footer --*/
+
+footer .footer_wraper{
+    border-top: 1px solid #ccc;
+    padding: 10px 0;
+    margin-top: 20px;
+}
+
+.footer_wraper p {
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer_wraper p a:nth-of-type(2) {
+    margin-left: 5px;
 }
