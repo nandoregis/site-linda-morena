@@ -61,10 +61,17 @@ class ProdutoModel
         return $product;
     }
 
-    public function selectAll() 
+    public function selectAll($par = null, $val = null) 
     {   
-        $this->sql = $this->db->connect()->prepare("SELECT * FROM `tb_produtos`");
-        $this->sql->execute();
+
+        if(!$par && !$val) {
+            $this->sql = $this->db->connect()->prepare("SELECT * FROM `tb_produtos`");
+            $this->sql->execute();
+        } else {
+            $this->sql = $this->db->connect()->prepare("SELECT * FROM `tb_produtos` WHERE $par = ?");
+            $this->sql->execute([$val]);
+        }
+
         $products = $this->sql->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($products as $key => $value) {

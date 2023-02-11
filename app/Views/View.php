@@ -10,7 +10,7 @@ class View
         $this->page = $pagina;
     }
 
-    public function render() 
+    public function render($dados = []) 
     {
         require_once("./app/Views/pages/".$this->page.".php"); 
     }

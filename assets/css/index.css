@@ -1,10 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;1,300;1,400&family=Roboto:ital,wght@0,100;0,300;1,100;1,300&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    text-decoration: none;
+    list-style-type: none;
 }
 
 html, body {
     height: 100%;
 }
 
+body {
+    background-color: #EEEEEE;
+}

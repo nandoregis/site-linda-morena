@@ -3,23 +3,23 @@
 namespace Controllers;
 
 use Controllers\Controller;
+use Models\CategoriaModel;
 use Views\View;
 
 class InicioController implements Controller
 {   
     private $view;
+    private $categoriaModel;
     public function __construct()
-    {
+    {   
+        $this->categoriaModel = new CategoriaModel;
         $this->view = new View('home');
     }
     
     private function inicio() {
 
-        $content = file_get_contents('https://dolarhoje.com/');
-        preg_match('/<input type="text" id="nacional" value="(.*?)"\/>/s', $content, $matches);
-        $dolar_vs_real = $matches[1];
-        
-        $this->view->render();       
+        $categorias = $this->categoriaModel->getAll();
+        $this->view->render($categorias);       
     }
 
     public function executar() 
