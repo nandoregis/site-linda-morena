@@ -32,20 +32,20 @@
             <div class="produtos--box">
                 <div class="produtos--wraper">
                     
-                        <div class="produtos--itens">
-                            <?php
-                                for($i = 0; $i < 8; $i++):
-                            ?>
-                            <div class="item">
-                                <img src="http://localhost/Novos%20Projetos/site-linda-morena/assets/upload/img63dfcc7fc9167.jpg" alt="">
-                                <div class="item--info">
-                                    <p class="item--nome">Nome do produto</p>
-                                    <p>Preço varejo 25,00</p>
-                                    <p>Preço atacado 20,00</p>
-                                </div>
+                    <div class="produtos--itens">
+                        <?php
+                            for($i = 0; $i < 8; $i++):
+                        ?>
+                        <div class="item">
+                            <img src="http://localhost/Novos%20Projetos/site-linda-morena/assets/upload/img63dfcc7fc9167.jpg" alt="">
+                            <div class="item--info">
+                                <p class="item--nome">Nome do produto</p>
+                                <p>Preço varejo 25,00</p>
+                                <p>Preço atacado 20,00</p>
                             </div>
-                            <?php endfor;?>
                         </div>
+                        <?php endfor;?>
+                    </div>
                     
                 </div>
             </div><!--produtos--box-->

@@ -2,8 +2,7 @@
 
     const CATEGORIA = document.querySelectorAll('.produtos--nav li');
     const BASE = document.querySelector('base').getAttribute('href');
-    
-    
+    const DIV_PRODUTO_WRAPER = document.querySelector('.produtos--wraper');
 
     CATEGORIA.forEach( item => {
         item.addEventListener('click', () => {
@@ -27,14 +26,11 @@
         let chave;
 
         CATEGORIA.forEach( (item, key ) => {
+
             if(!item.classList.contains('select') ) {
                 contador--;
 
-            } else {
-                console.log('dsadfsa');
-                chave = key;
-            }
-
+            } else chave = key;
             
         });
 
@@ -63,10 +59,88 @@
     
     verificarCategoriaEscolhida();
 
+    class Box {
+
+        constructor(dados) {
+            this.produtos = dados;
+            this.limiteProdutos = 8;
+            this.quantidade_produto = dados.length;
+            this.caixas;
+        }
+
+        criarBox() {
+            this.box = document.createElement('div');
+            this.box.className = 'produtos--itens';
+            return this.box;
+        }
+
+        criarPaginas() {
+
+        }
+
+        teste() {
+            let pages = this.quantidade_produto / this.limiteProdutos;
+            pages = Math.ceil(pages);
+            let caixa = [];
+            let contador = 0;
+            let key = 0;
+
+            for (let i = 0; i < pages; i++) {
+                let obj = { produtos: [] }
+                caixa.push([]);
+            }
+
+            
+            for (let i = 0; i < this.quantidade_produto; i++) {
+                
+                if( contador === this.limiteProdutos ) {
+                    contador = 0;
+                    key++;
+                }
+
+                contador++;
+                
+                let prod = { id : i, images : [this.produtos[i]] };
+
+                caixa[key].push(prod);
+                
+            }
+
+            
+            this.caixas = caixa;
+
+            caixa.forEach(item => {
+               console.log(item);
+               let div = this.criarBox();
+               
+                item.forEach(el => {
+                    console.log(' id : ' + el.id)
+                    let p = document.createElement('p');
+                    p.innerText = el.id;
+                    div.append(p);
+                });
+
+                DIV_PRODUTO_WRAPER.append(div);
+
+            });
+        }
+
+        render() {
+            this.teste();
+            
+            
+            let div = this.criarBox();
+            
+        }
+
+    }
+
+
+
+    let box = new Box([1,1,1,1,1,1,1,1,0]);
+
+    box.render();
+
+
 
 })();
-
-/**
- * pelas categorias pegar um atributo com identificação do id_code da categoria
- * com uma requisição pegar produtos com essa categoria.
- */
