@@ -151,6 +151,7 @@
 .produtos--itens {
     display: flex;
     flex-wrap: wrap;
+    width: 100%;
 }
 
 .produtos--itens > .item {
@@ -161,7 +162,8 @@
 
 .produtos--itens > .item img {
     width: 100%;
-    max-height: 400px;
+    min-height: 300px;
+    max-height: 300px;
 }
 
 .produtos--itens > .item p {

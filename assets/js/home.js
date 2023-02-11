@@ -8,6 +8,7 @@
         item.addEventListener('click', () => {
             adicionaClasseERemove(item);
             verificarCategoriaEscolhida();
+            DIV_PRODUTO_WRAPER.innerHTML = "";
         });
     });
 
@@ -47,7 +48,10 @@
         }
 
         const PRODUTOS = await getProdutos(idCode);
-        console.log(PRODUTOS);
+        // console.log(PRODUTOS);
+
+        let box = new Box(PRODUTOS);
+        box.render();
     }
 
     const getProdutos = async (id) => {
@@ -99,25 +103,24 @@
                 }
 
                 contador++;
-                
-                let prod = { id : i, images : [this.produtos[i]] };
 
-                caixa[key].push(prod);
+                caixa[key].push(this.produtos[i]);
                 
             }
-
             
             this.caixas = caixa;
 
             caixa.forEach(item => {
-               console.log(item);
+            //    console.log(item);
                let div = this.criarBox();
                
                 item.forEach(el => {
-                    console.log(' id : ' + el.id)
-                    let p = document.createElement('p');
-                    p.innerText = el.id;
-                    div.append(p);
+                    
+                    const {nome, preco_atacado, preco_varejo} = el;
+                    let img = el.images[0].url_path
+                    let produto = new Produto(nome, img, preco_varejo, preco_atacado );
+                    produto = produto.criarHTMLProduto();
+                    div.append(produto);
                 });
 
                 DIV_PRODUTO_WRAPER.append(div);
@@ -128,19 +131,48 @@
         render() {
             this.teste();
             
-            
-            let div = this.criarBox();
-            
         }
 
     }
 
+    class Produto {
+        constructor(nome,img,varejo,atacado) {
+            this.nome = nome;
+            this.imgSrc = img;
+            this.varejo = varejo;
+            this.atacado = atacado;
+        }
 
+        criarHTMLProduto() {
+            this.item = document.createElement('div');
+            this.item.className = 'item';
 
-    let box = new Box([1,1,1,1,1,1,1,1,0]);
+            let img = document.createElement('img');
+            img.src = this.imgSrc;
 
-    box.render();
+            let info = document.createElement('div');
+            info.className = 'item--info';
 
+            let nome = document.createElement('p');
+            nome.className = 'item--nome';
+            nome.innerText = this.nome;
+
+            let varejo = document.createElement('p');
+            varejo.innerText = 'Varejo R$ '+this.varejo+',00';
+
+            let atacado = document.createElement('p');
+            atacado.innerText = 'Atacado R$ '+this.atacado+',00';
+
+            info.append(nome);
+            info.append(varejo);
+            info.append(atacado);
+
+            this.item.append(img);
+            this.item.append(info);
+
+            return this.item;
+        }
+    }
 
 
 })();
