@@ -184,6 +184,33 @@
     letter-spacing: 1.5px;
 }
 
+.produtos--paginacao {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.produtos--paginacao ul {
+    display: flex;
+}
+
+.produtos--paginacao  li {
+    padding: 10px 15px;
+    margin: 0 5px;
+    border: 1px solid transparent;
+    transition: 0.3s;
+}
+
+.produtos--paginacao  li.selected {
+    background-color: #ccc;
+}
+
+.produtos--paginacao  li:hover {
+    transition: 0.3s;
+    cursor: pointer;
+    border: 1px solid #ccc;
+}
+
 /* -- Footer --*/
 
 footer .footer_wraper{
@@ -200,3 +227,6 @@ footer .footer_wraper{
 .footer_wraper p a:nth-of-type(2) {
     margin-left: 5px;
 }
+
+/*------------------------------------------*/
+
