@@ -115,7 +115,159 @@
 
 /*---- CARRINHO MODAL ----*/
 
+.container--carrinho {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(36, 36, 36, 0.5);
+}
 
+.container--carrinho.hide {
+    display: none;
+}
+
+.carrinho {
+    width: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: #fff;
+    box-shadow: 1px 1px 10px 1px rgb(56, 56, 56);
+    padding: 40px 20px;
+}
+
+.carrinho--exit {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.carrinho h2 {
+    margin-bottom: 20px;
+}
+
+.carrinho > div {
+    margin-bottom: 10px;
+}
+
+.carrinho--detalhes {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid #575757;
+    padding-bottom: 10px;
+}
+.carrinho--detalhes #carrinhoLimpar {border-bottom: 1px solid transparent;}
+.carrinho--detalhes #carrinhoLimpar:hover {
+    cursor: pointer;
+    border-bottom: 1px solid #575757;
+}
+
+.carrinho--aviso {
+    padding: 6px 15px;
+    background-color: #e2e2e2;
+}
+
+.carrinho--aviso p {
+    color: #3a3a3a;
+}
+
+.carrinho--produto {
+    display: flex;
+    padding: 10px 0 20px 0;
+    border-bottom: 2px solid #e4e4e4;
+}
+
+.carrinho--produto__img {
+    width: 40%;
+    background-color: #ccc;
+}
+
+.carrinho--produto__img img {
+    width: 100%;
+    min-height: 100%;
+}
+
+.carrinho--produto__info {
+    width: 60%;
+    padding: 0 15px;
+}
+
+
+.car-info--pt1 {
+    height: 80%;
+    position: relative;
+}
+
+.button-remover-produto {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.button-remover-produto:hover > svg{
+    cursor: pointer;
+    transform: scale(0.95);
+}
+
+.car-info--pt1 h3 {
+    margin-bottom: 10px;
+    letter-spacing: 1.5px;
+    color: #505050;
+    font-size: 25px;
+}
+.car-info--pt1 p {
+    margin-bottom: 10px;
+    color: #505050;
+}
+
+.car-info--pt2 {
+    height: 20%;
+    padding: 5px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.car-info--pt2 h3 {
+    font-size: 30px;
+    color: #505050;
+}
+
+.car-info--pt2__add {
+    display: flex;
+}
+
+.car-info--pt2__add > div {
+    width: 30px;
+    text-align: center;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.car-info--pt2__add > div.mostrar {
+    border: 1px solid transparent;
+    cursor: auto;
+}
+
+.car-info--pt2__add > div.mostrar input[type=number] {
+    border: none;
+    width: 100%;
+    height: 100%;
+    font-size: 16px;
+    outline: none;
+    text-align: center;
+    
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -moz-appearance: none;
+    appearance: none;
+}
 
 /* -- produtos ---*/
 
@@ -413,3 +565,15 @@ footer .footer_wraper{
 
 /*------------------------------------------*/
 
+@media screen and (max-width : 850px) {
+    .carrinho-btn_add,
+    .valores {
+        width: 100%;
+    }
+    .produtos--wraper {
+        min-height: 500px;
+    }
+    .produtos--itens > .item {
+        width: 50%;
+    }
+}

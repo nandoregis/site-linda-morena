@@ -92,7 +92,6 @@
         <div class="outros-produtos--title">
             <h2>Outros produtos</h2>
         </div>
-      
 
             <div class="outros-produtos--box">
                 
@@ -101,7 +100,7 @@
                     foreach ($outros as $key => $value) :
                 ?>
                     <div class="card">
-                        <a href="#">
+                        <a href="<?= PATH_URL.'produto/'.$value['slug'].'?id='.$value['id_code']?>">
                             <div class="card--img">
                                 <img src="<?=$value['images'][0]['url_path']?>" alt="">
                             </div>
@@ -115,6 +114,8 @@
             </div>
         </div><!--container-->
     </section>
+
+    
     <?php 
         include_once('./app/Views/pages/components/carrinho.php');
         include_once('./app/Views/pages/components/footer.php');

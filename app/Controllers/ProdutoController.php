@@ -1,5 +1,9 @@
 <?php
 
+    // $mpdf = new \Mpdf\Mpdf();
+    // $mpdf->WriteHTML('<h1>Hello world!</h1>');
+    // $mpdf->Output();
+
 namespace Controllers;
 
 use Models\ProdutoModel;

@@ -1,19 +1,37 @@
 (()=> {
 
+    const WIDTH_REZISES = [800];
+
     const CATEGORIA = document.querySelectorAll('.produtos--nav li');
     const BASE = document.querySelector('base').getAttribute('href');
     const DIV_PRODUTO_WRAPER = document.querySelector('.produtos--wraper');
     const PAGINACAO = document.querySelector('.produtos--paginacao ul');
 
+    var limitador_produtos = 8;
+
+
     CATEGORIA.forEach( item => {
         item.addEventListener('click', () => {
             adicionaClasseERemove(item);
             verificarCategoriaEscolhida();
-            DIV_PRODUTO_WRAPER.innerHTML = "";
-            PAGINACAO.innerHTML = "";
-            DIV_PRODUTO_WRAPER.style = '';
+            resetarEstadosElementos();
         });
     });
+
+    const resetarEstadosElementos = () => {
+        DIV_PRODUTO_WRAPER.innerHTML = "";
+        PAGINACAO.innerHTML = "";
+        DIV_PRODUTO_WRAPER.style = '';
+    }
+    
+   
+    const larguraTela = () => {
+        if (window.innerWidth <= 850 ) { 
+            limitador_produtos = 4;
+        }
+    }
+
+    larguraTela();
 
     const adicionaClasseERemove = (item) => {
         CATEGORIA.forEach(el => {
@@ -50,11 +68,7 @@
             idCode = CATEGORIA[0].dataset.code;
         }
 
-        const PRODUTOS = await getProdutos(idCode);
-        // console.log(PRODUTOS);
-
-        let box = new Box(PRODUTOS);
-        box.render();
+       addProdutoNoDOM(idCode);
     }
 
     const getProdutos = async (id) => {
@@ -64,16 +78,29 @@
         return json;
     }
     
-    verificarCategoriaEscolhida();
+    
+    const addProdutoNoDOM = async (idCode)=> {
+        const PRODUTOS = await getProdutos(idCode);
+        
+        let box = new Box(PRODUTOS);
+        box.setLimitadorProdutos(limitador_produtos);
+        box.render();
+    }
 
+    verificarCategoriaEscolhida();
+    
     class Box {
 
         constructor(dados) {
             this.produtos = dados;
-            this.limiteProdutos = 8;
+            this.limiteProdutos;
             this.quantidade_produto = dados.length;
             this.caixas;
             this.pages;
+        }
+
+        setLimitadorProdutos(limite) {
+            this.limiteProdutos = limite;
         }
 
         criarBox() {

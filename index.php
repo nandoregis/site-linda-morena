@@ -6,5 +6,5 @@
     $test = new Application;
     $test->auto($url);
 
-
+    
 ?>
