@@ -7,7 +7,7 @@
         </a>
     </div>
 
-    <div class="button_carrinho">
+    <div id="btn-open-carrinho" class="button_carrinho">
         <div class="button_carrinho--alert">
             <small>10</small>
         </div>

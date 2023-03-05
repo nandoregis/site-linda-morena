@@ -3,12 +3,15 @@
     const CATEGORIA = document.querySelectorAll('.produtos--nav li');
     const BASE = document.querySelector('base').getAttribute('href');
     const DIV_PRODUTO_WRAPER = document.querySelector('.produtos--wraper');
+    const PAGINACAO = document.querySelector('.produtos--paginacao ul');
 
     CATEGORIA.forEach( item => {
         item.addEventListener('click', () => {
             adicionaClasseERemove(item);
             verificarCategoriaEscolhida();
             DIV_PRODUTO_WRAPER.innerHTML = "";
+            PAGINACAO.innerHTML = "";
+            DIV_PRODUTO_WRAPER.style = '';
         });
     });
 
@@ -70,6 +73,7 @@
             this.limiteProdutos = 8;
             this.quantidade_produto = dados.length;
             this.caixas;
+            this.pages;
         }
 
         criarBox() {
@@ -79,13 +83,40 @@
         }
 
         criarPaginas() {
+            let pages = this.pages;
+
+            for(let i = 0; i < pages; i++) {
+                let li = document.createElement('li');
+                
+                li.addEventListener('click', () => {
+                    this.eventoPagina(li, i);
+                });
+
+                if(i === 0) li.className = 'selected';
+
+                li.innerText = i + 1;
+
+                PAGINACAO.append(li);
+            };
 
         }
+
+        eventoPagina(el, position) {
+            let scrollLeft = position * 100;
+            DIV_PRODUTO_WRAPER.style.transition = '0.6s';
+            DIV_PRODUTO_WRAPER.style.marginLeft = `-${scrollLeft}%`;
+            
+            for(let i = 0; i < PAGINACAO.children.length; i++) 
+                PAGINACAO.children[i].classList.remove('selected');
+          
+            el.classList.add('selected');
+        }
+
 
         getDadosOrganizados() {
 
             let pages = this.quantidade_produto / this.limiteProdutos;
-            pages = Math.ceil(pages);
+            this.pages = Math.ceil(pages);
             let caixa = [];
             let contador = 0;
             let key = 0;
@@ -115,7 +146,7 @@
         incluirHTML() {
 
             this.caixa = this.getDadosOrganizados();
-            
+            this.criarPaginas();
             this.caixa.forEach(item => {
   
                let div = this.criarBox();
@@ -131,8 +162,15 @@
                 });
 
                 DIV_PRODUTO_WRAPER.append(div);
-
+                this.larguraDivProdutoWraper();
             });
+            
+        }
+
+        larguraDivProdutoWraper() {
+        
+            let width = 100 * this.pages;
+            DIV_PRODUTO_WRAPER.style.width = `${width}%`;
         }
 
         render() {

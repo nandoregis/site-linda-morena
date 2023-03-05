@@ -37,9 +37,6 @@
 
             <div class="produtos--paginacao">
                 <ul>
-                    <li class="selected">1</li>
-                    <li>2</li>
-                    <li>3</li>
                 </ul>
             </div>
 
@@ -47,6 +44,7 @@
     </section>
 
     <?php 
+        include_once('./app/Views/pages/components/carrinho.php');
         include_once('./app/Views/pages/components/footer.php');
     ?>
 

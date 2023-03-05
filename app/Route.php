@@ -34,10 +34,10 @@ class Route
 
     public static function get($path, $func, $paramentro = null) {
         
-        $codincao = self::checkUrlpathAndParamenter($path);
+        $condicao = self::checkUrlpathAndParamenter($path);
 
-        if($codincao) {
-            if(!$paramentro) $paramentro = $codincao['id'];
+        if($condicao) {
+            if(!$paramentro) $paramentro = $condicao['id'];
             $func($paramentro);
         }
         
